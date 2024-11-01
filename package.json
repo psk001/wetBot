@@ -5,6 +5,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
+    "start:dev:debug": "NODE_ENV=development DEBUG=* nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main"
   },
@@ -14,10 +15,13 @@
     "@nestjs/core": "^10.4.6",
     "@nestjs/platform-express": "^10.4.6",
     "@nestjs/schedule": "^4.1.1",
+    "@nestjs/sequelize": "^10.0.1",
     "nestjs-telegraf": "^2.8.1",
     "nodemon": "^3.1.7",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {

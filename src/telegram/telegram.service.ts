@@ -16,7 +16,11 @@ export class TelegramService {
 
     async subscribe(chatId: number, city: string): Promise<string> {
         this.subscribers.set(chatId, city);
-        return `Successfully subscribed to daily weather updates for ${city}`;
+        const weather = await this.getWeather(city);
+        return `
+        Successfully subscribed to daily weather updates for ${city}.
+        ${weather}
+        `;
     }
 
     async unsubscribe(chatId: number): Promise<string> {
@@ -54,9 +58,8 @@ export class TelegramService {
 
             const data = await response.json();
 
-            console.log('data ', data);
-
-            return `Current temperature is ${data.current.temp_c}. \n Wind is ${data.current.wind_kph}`
+            this.logger.log(data)
+            return `Current temperature is ${data.current.temp_c} C.\nWind is ${data.current.wind_kph} kmph`
 
         } catch (error) {
             this.logger.error(`Error fetching weather for ${city}:`, error);
