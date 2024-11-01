@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TelegramService } from './telegram.service';
 import { TelegramUpdate } from './telegram.update';
+import { SubscriptionModule } from '@/subscription/subscription.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TelegramUpdate } from './telegram.update';
       }),
       inject: [ConfigService],
     }),
+    SubscriptionModule
   ],
   providers: [TelegramService, TelegramUpdate],
 })

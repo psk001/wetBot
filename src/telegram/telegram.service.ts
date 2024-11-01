@@ -3,6 +3,7 @@ import { InjectBot } from 'nestjs-telegraf';
 import { Telegraf } from 'telegraf';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { SubscriptionService } from '@/subscription/subscription.service';
 
 @Injectable()
 export class TelegramService {
@@ -12,15 +13,14 @@ export class TelegramService {
     constructor(
         @InjectBot() private bot: Telegraf,
         private configService: ConfigService,
+        private subscriptionService: SubscriptionService,
     ) { }
 
     async subscribe(chatId: number, city: string): Promise<string> {
         this.subscribers.set(chatId, city);
+        await this.subscriptionService.createSubscription(chatId, city);
         const weather = await this.getWeather(city);
-        return `
-        Successfully subscribed to daily weather updates for ${city}.
-        ${weather}
-        `;
+        return `Successfully subscribed to daily weather updates for ${city}. ${weather}`;
     }
 
     async unsubscribe(chatId: number): Promise<string> {
@@ -35,6 +35,7 @@ export class TelegramService {
         try {
             for (const [chatId, city] of this.subscribers.entries()) {
                 const weather = await this.getWeather(city);
+                this.logger.log(weather);
                 await this.bot.telegram.sendMessage(chatId, weather);
                 this.logger.debug(`Sent weather update for ${city} to chat ${chatId}`);
             }

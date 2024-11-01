@@ -8,7 +8,7 @@ export class Subscription {
     id: number;
 
     @Column()
-    userName: string;
+    chatId: number;
 
     @Column()
     city: string;

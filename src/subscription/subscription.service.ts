@@ -10,13 +10,13 @@ export class SubscriptionService {
         private readonly subscriptionRepository: Repository<Subscription>,
     ) { }
 
-    async createSubscription(userName: string, city: string): Promise<Subscription> {
-        const subscription = this.subscriptionRepository.create({ userName, city });
+    async createSubscription(chatId: number, city: string): Promise<Subscription> {
+        const subscription = this.subscriptionRepository.create({ chatId, city });
         return this.subscriptionRepository.save(subscription);
     }
 
-    async removeSubscription(userName: string): Promise<void> {
-        await this.subscriptionRepository.delete({ userName });
+    async removeSubscription(chatId: number): Promise<void> {
+        await this.subscriptionRepository.delete({ chatId });
     }
 
     async getAllSubscriptions(): Promise<Subscription[]> {
