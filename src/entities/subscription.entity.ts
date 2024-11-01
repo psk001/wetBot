@@ -1,5 +1,3 @@
-// src/entities/subscription.entity.ts
-
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -8,8 +6,14 @@ export class Subscription {
     id: number;
 
     @Column()
+    name: string;
+
+    @Column()
     chatId: number;
 
     @Column()
     city: string;
+
+    @Column()
+    status: string
 }

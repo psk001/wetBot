@@ -9,16 +9,18 @@ export class SubscriptionController {
     @Post()
     async subscribe(
         @Body('chatId') chatId: number,
+        @Body('name') name: string,
         @Body('city') city: string
     ): Promise<Subscription> {
-        return this.subscriptionService.createSubscription(chatId, city);
+        return this.subscriptionService.createSubscription(chatId, name, city);
     }
 
     @Delete()
     async unsubscribe(
-        @Body('chatId') chatId: number
+        @Body('chatId') chatId: number,
+        @Body('city') city: string
     ): Promise<void> {
-        return this.subscriptionService.removeSubscription(chatId);
+        return this.subscriptionService.removeSubscription(chatId, city);
     }
 
     @Get()

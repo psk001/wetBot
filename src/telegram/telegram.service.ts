@@ -16,18 +16,27 @@ export class TelegramService {
         private subscriptionService: SubscriptionService,
     ) { }
 
-    async subscribe(chatId: number, city: string): Promise<string> {
-        this.subscribers.set(chatId, city);
-        await this.subscriptionService.createSubscription(chatId, city);
+    async subscribe(chatId: number, name: string, city: string): Promise<string> {
+        // this.subscribers.set(chatId, city);
+        await this.subscriptionService.createSubscription(chatId, name, city);
         const weather = await this.getWeather(city);
         return `Successfully subscribed to daily weather updates for ${city}. ${weather}`;
     }
 
-    async unsubscribe(chatId: number): Promise<string> {
-        this.subscribers.delete(chatId);
+    async unsubscribe(chatId: number, city: string): Promise<string> {
+        // this.subscribers.delete(chatId, city);
         return 'Successfully unsubscribed from daily weather updates';
     }
 
+    async weatherNow(chatId: number): Promise<string> {
+        const city = this.subscribers.get(chatId);
+        // get from db
+        if (!city) {
+            return 'You are not subscribed to daily weather updates';
+        }
+        const weather = await this.getWeather(city);
+        return `Current weather for ${city}: ${weather}`;
+    }
     // Explicitly define type for the method
     @Cron(CronExpression.EVERY_DAY_AT_8AM, { timeZone: 'UTC' } as any)
     public async sendDailyUpdates(): Promise<void> {
